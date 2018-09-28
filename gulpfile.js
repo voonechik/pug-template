@@ -3,6 +3,7 @@ var syntax        = 'sass'; // Syntax: sass or scss;
 var gulp          = require('gulp'),
 		gutil         = require('gulp-util' ),
 		sass          = require('gulp-sass'),
+		pug 					= require('gulp-pug'),
 		browserSync   = require('browser-sync'),
 		concat        = require('gulp-concat'),
 		uglify        = require('gulp-uglify'),
@@ -22,6 +23,14 @@ gulp.task('browser-sync', function() {
 		// online: false, // Work Offline Without Internet Connection
 		// tunnel: true, tunnel: "projectname", // Demonstration page: http://projectname.localtunnel.me
 	})
+});
+
+gulp.task('templates', function() {
+  return gulp.src('app/templates/**/*')
+  .pipe(pug({
+		basedir: 'app'
+	}))
+	.pipe(gulp.dest('app'))
 });
 
 gulp.task('styles', function() {
@@ -60,9 +69,10 @@ gulp.task('rsync', function() {
 	}))
 });
 
-gulp.task('watch', ['styles', 'js', 'browser-sync'], function() {
+gulp.task('watch', ['templates', 'styles', 'js', 'browser-sync'], function() {
 	gulp.watch('app/'+syntax+'/**/*.'+syntax+'', ['styles']);
 	gulp.watch(['libs/**/*.js', 'app/js/common.js'], ['js']);
+	gulp.watch('app/templates/**/*', ['templates']);
 	gulp.watch('app/*.html', browserSync.reload)
 });
 

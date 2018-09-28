@@ -1,5 +1,5 @@
 $(function() {
 
-	// Custom JS
+	$('body').css('background', 'blue')
 
 });
